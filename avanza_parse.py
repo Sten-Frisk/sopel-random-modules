@@ -23,7 +23,7 @@ def avanzaStringToInt(inputString):
         return int(re.sub('[^0-9]', '', inputString))
     except ValueError:
         return 0
-    
+
 def getTickerInfoAvanza(ticker, quick=False):
     base_url = 'https://www.avanza.se/ab/component/orderbook_search/?query={0}&collection=STOCK&onlyTradable=false&pageType=stock&orderTypeView='
 
@@ -45,8 +45,10 @@ def getTickerInfoAvanza(ticker, quick=False):
     res['url'] = stockUrl
     res['urlAbout'] = stockUrl.replace('om-aktien', 'om-bolaget')
 
+    print(res['url'])
+
     if quick is True:
-        return res  
+        return res
 
     lastPriceUpdate = re.findall('<span class="lastPrice SText bold"><span class="pushBox roundCorners3" data-e2e="quoteLastPrice" title="Senast uppdaterad: ([0-9:]+)">([,\d]+)</span></span>', r.text)
     res['lastUpdate'] = lastPriceUpdate[0][0]
@@ -57,15 +59,20 @@ def getTickerInfoAvanza(ticker, quick=False):
 
     dataOrderbookCurrency = re.findall('data-orderbook_currency="(.*)"', r.text)
     res['orderBookCurrency'] = dataOrderbookCurrency[0]
-    
+
     changePercent = re.findall('<span class="changePercent SText bold \w+">(.*)\s+\%</span>', r.text)
     res['changePercent'] = avanzaStringToFloat(changePercent[0])
-     
+
     owners = re.findall('hos Avanza</span></dt>\r\n\s+<dd><span>(.*)</span></dd>', r.text)
     res['numOwners'] = avanzaStringToInt(owners[0])
-    
+
     networth = re.findall('Börsvärde MSEK</span></dt>\r\n\s+<dd><span>(.*)</span></dd>', r.text)
-    res['networth'] = avanzaStringToInt(networth[0])
+
+    if not networth:
+        networth = re.findall('Börsvärde MUSD</span></dt>\r\n\s+<dd><span>(.*)</span></dd>', r.text)
+
+    if networth:
+        res['networth'] = avanzaStringToInt(networth[0])
 
     highestPrice = re.findall('<span class="highestPrice SText bold">(.*)</span>', r.text)
     res['highestPrice'] = avanzaStringToFloat(highestPrice[0])
@@ -77,7 +84,11 @@ def getTickerInfoAvanza(ticker, quick=False):
     res['totalVolumeTraded'] = avanzaStringToInt(totalVolumeTraded[0])
 
     totalValueTraded = re.findall('<span class="totalValueTraded">(.*)</span>', r.text)
-    res['totalValueTraded'] = avanzaStringToInt(totalValueTraded[0])
+
+    if totalValueTraded:
+        res['totalValueTraded'] = avanzaStringToInt(totalValueTraded[0])
+    else:
+        res['totalValueTraded'] = 0
 
     return res
 
@@ -123,31 +134,7 @@ def getAvanzaReportDates(ticker):
 
     return output
 
-if __name__ == "__main__":
-    # test parsing function without sopel bot
-    tickers = 'kambi,pricer,knebv'
-    tickers = tickers.split(',')
-    for t in tickers:
-        try:
-            da = getTickerInfoAvanza(t)
-            if da is None:
-                raise TypeError('I need a valid ticker name')
-            msg = getOutput(da)
-            print(repr(msg))
-        except (IndexError, TypeError) as e:
-            print(e.message)
 
-    try:
-        da = getAvanzaReportDates('telia')
-        if da is None:
-            raise TypeError('I need a valid ticker name')
-        for r in da[:5]:
-            print(r)
-    except (IndexError, TypeError) as e:
-        print(e.message)
-
-    
-    sys.exit(0)
 
 from sopel import module
 from sopel import formatting
@@ -185,3 +172,30 @@ def avanzar(bot, trigger):
 
     except (IndexError, TypeError) as e:
         bot.say(e.message)
+
+
+if __name__ == "__main__":
+    # test parsing function without sopel bot
+    tickers = 'tesla'
+    tickers = tickers.split(',')
+    for t in tickers:
+        try:
+            da = getTickerInfoAvanza(t)
+            if da is None:
+                raise TypeError('I need a valid ticker name')
+            msg = getOutput(da)
+            print(repr(msg))
+        except (IndexError, TypeError) as e:
+            print(e.message)
+
+    try:
+        da = getAvanzaReportDates('telia')
+        if da is None:
+            raise TypeError('I need a valid ticker name')
+        for r in da[:5]:
+            print(r)
+    except (IndexError, TypeError) as e:
+        print(e.message)
+
+
+    sys.exit(0)

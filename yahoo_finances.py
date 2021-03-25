@@ -314,6 +314,13 @@ try:
         botten = bot
         runMe(tickers)
 
+    @module.commands('eth', 'ether')
+    def bitte(bot, trigger):
+        tickers = 'ETH-USD'
+        global botten
+        botten = bot
+        runMe(tickers)
+
     @module.commands('doge')
     def doggi(bot, trigger):
         tickers = 'DOGE-USD'

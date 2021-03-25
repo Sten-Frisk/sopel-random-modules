@@ -9,7 +9,9 @@ import requests, json
 import re
 import locale
 
+# locale.setlocale(locale.LC_ALL, 'sv_SE.utf8')
 locale.setlocale(locale.LC_ALL, 'sv_SE')
+
 
 def avanzaStringToFloat(inputString):
     try:

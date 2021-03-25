@@ -9,8 +9,8 @@ import requests, json
 import re
 import locale
 
-# locale.setlocale(locale.LC_ALL, 'sv_SE.utf8')
-locale.setlocale(locale.LC_ALL, 'sv_SE')
+locale.setlocale(locale.LC_ALL, 'sv_SE.utf8')
+# locale.setlocale(locale.LC_ALL, 'sv_SE')
 
 
 def avanzaStringToFloat(inputString):
@@ -157,12 +157,12 @@ def avanza(bot, trigger):
         try:
             res = getTickerInfoAvanza(ticker)
             if res is None:
-                raise TypeError('I need a valid ticker name. My lady.')
+                raise TypeError('I need a valid ticker name. My lady. *tips fedora*')
             msg = getOutput(res)
             bot.say(msg)
 
         except (IndexError, TypeError) as e:
-            bot.say(e.message)
+            bot.say(str(e))
 
 @module.commands('azr')
 def avanzar(bot, trigger):
@@ -178,7 +178,7 @@ def avanzar(bot, trigger):
             bot.say(r)
 
     except (IndexError, TypeError) as e:
-        bot.say(e.message)
+        bot.say(str(e))
 
 
 if __name__ == "__main__":
@@ -193,7 +193,7 @@ if __name__ == "__main__":
             msg = getOutput(da)
             print(repr(msg))
         except (IndexError, TypeError) as e:
-            print(e.message)
+            print(str(e))
 
     try:
         da = getAvanzaReportDates('telia')
@@ -202,7 +202,7 @@ if __name__ == "__main__":
         for r in da[:5]:
             print(r)
     except (IndexError, TypeError) as e:
-        print(e.message)
+        print(str(e))
 
 
     sys.exit(0)

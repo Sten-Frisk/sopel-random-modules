@@ -71,8 +71,10 @@ def getTickerInfoAvanza(ticker, quick=False):
     if not networth:
         networth = re.findall('Börsvärde MUSD</span></dt>\r\n\s+<dd><span>(.*)</span></dd>', r.text)
 
-    if networth:
+    try:
         res['networth'] = avanzaStringToInt(networth[0])
+    except IndexError:
+        res['networth'] = 0
 
     highestPrice = re.findall('<span class="highestPrice SText bold">(.*)</span>', r.text)
     res['highestPrice'] = avanzaStringToFloat(highestPrice[0])
@@ -85,9 +87,9 @@ def getTickerInfoAvanza(ticker, quick=False):
 
     totalValueTraded = re.findall('<span class="totalValueTraded">(.*)</span>', r.text)
 
-    if totalValueTraded:
+    try:
         res['totalValueTraded'] = avanzaStringToInt(totalValueTraded[0])
-    else:
+    except IndexError:
         res['totalValueTraded'] = 0
 
     return res
@@ -142,8 +144,11 @@ from sopel import formatting
 @module.commands('a', 'avanza', 'aza', 'ava', 'az')
 def avanza(bot, trigger):
     ticker = trigger.group(2)
+
     if not ticker:
-        ticker = '123'
+        bot.say("missing ticker ye!")
+        return
+
 
     tickers = ticker.split(',')
     for ticker in tickers:

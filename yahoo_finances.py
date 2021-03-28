@@ -315,7 +315,7 @@ try:
         runMe(tickers)
 
     @module.commands('eth', 'ether')
-    def bitte(bot, trigger):
+    def eth(bot, trigger):
         tickers = 'ETH-USD'
         global botten
         botten = bot

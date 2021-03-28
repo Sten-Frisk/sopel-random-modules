@@ -300,15 +300,22 @@ try:
 
     # shortcuts
 
-    @module.commands('aud')
-    def audsek(bot, trigger):
-        tickers = 'audsek=x'
+    @module.commands('usd')
+    def usdsek(bot, trigger):
+        tickers = 'usdsek=x'
         global botten
         botten = bot
         runMe(tickers)
 
     @module.commands('bitte', 'btcusd', 'btc')
     def bitte(bot, trigger):
+        tickers = 'BTC-USD'
+        global botten
+        botten = bot
+        runMe(tickers)
+        
+    @module.commands('ada', 'cardano')
+    def adan(bot, trigger):
         tickers = 'BTC-USD'
         global botten
         botten = bot
@@ -335,12 +342,6 @@ try:
         botten = bot
         runMe(tickers)
 
-    @module.commands('curre', 'kurredutt')
-    def curre(bot, trigger):
-        global botten
-        botten = bot
-        ticker = 'CUR'
-        runMe(ticker)
 except:
     #module not available
     #import traceback

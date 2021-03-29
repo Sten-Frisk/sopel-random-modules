@@ -313,7 +313,7 @@ try:
         global botten
         botten = bot
         runMe(tickers)
-        
+
     @module.commands('ada', 'cardano')
     def adan(bot, trigger):
         tickers = 'BTC-USD'
@@ -335,6 +335,13 @@ try:
         botten = bot
         runMe(tickers)
 
+    @module.commands('wsb', 'wallstreetbets', 'yesorno')
+    def wsb(bot, trigger):
+        tickers = 'GME,AMC,TSLA,NOK,RKT,PLTR,NIO'
+        global botten
+        botten = bot
+        runMe(tickers)
+
     @module.commands('crypto')
     def crypto(bot, trigger):
         tickers = 'BTC-USD,ETH-USD,XRP-USD,DOGE-USD'
@@ -348,7 +355,7 @@ except:
     #traceback.print_exc(file=sys.stdout)
     pass
 
-def test():
+def testing():
     #tickers = 'PRIC-B.ST'
     #tickers = 'G5EN.ST'
     #tickers = 'G5EN.ST,PRIC-B.ST'
@@ -356,7 +363,7 @@ def test():
     #tickers = 'microsoft,fingerprint,pricer'
     #tickers = 'pricer,BTCUSD=X'
     #tickers = 'DOGE-USD'
-    tickers = 'indu-c'
+    tickers = 'GME,AMC,TSLA,NOK,RKT,PLTR,NIO'
     #tickers = 'kkd'
     #tickers = 'fingerprint'
     #tickers = u'marketing group'
@@ -374,5 +381,5 @@ def test2():
     res = findTickers(da, maxresult=20)
 
 if __name__ == "__main__":
-    test()
-    #test2()
+
+    testing()

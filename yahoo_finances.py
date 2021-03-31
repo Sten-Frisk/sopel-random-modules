@@ -307,6 +307,13 @@ try:
         botten = bot
         runMe(tickers)
 
+    @module.commands('eur')
+    def eursek(bot, trigger):
+        tickers = 'eursek=x'
+        global botten
+        botten = bot
+        runMe(tickers)
+
     @module.commands('bitte', 'btcusd', 'btc')
     def bitte(bot, trigger):
         tickers = 'BTC-USD'
@@ -345,6 +352,41 @@ try:
     @module.commands('crypto')
     def crypto(bot, trigger):
         tickers = 'BTC-USD,ETH-USD,XRP-USD,DOGE-USD'
+        global botten
+        botten = bot
+        runMe(tickers)
+
+    @module.commands('metal')
+    def metal(bot, trigger):
+        tickers = 'GC=F,SI=F,HG=F'
+        global botten
+        botten = bot
+        runMe(tickers)
+
+    @module.commands('oil')
+    def olja(bot, trigger):
+        tickers = 'CL=F,BZ=F,HO=F'
+        global botten
+        botten = bot
+        runMe(tickers)
+
+    @module.commands('asien')
+    def asia(bot, trigger):
+        tickers = '399001.SZ,^HSI,^N225'
+        global botten
+        botten = bot
+        runMe(tickers)
+
+    @module.commands('börsen')
+    def borsen(bot, trigger):
+        tickers = '^OMX,^GDAXI,^GSPC,BTC-USD'
+        global botten
+        botten = bot
+        runMe(tickers)
+
+    @module.commands('omx')
+    def omxen(bot, trigger):
+        tickers = '^OMX'
         global botten
         botten = bot
         runMe(tickers)

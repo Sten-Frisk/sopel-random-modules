@@ -8,10 +8,16 @@ import os
 import requests, json
 import re
 import locale
+from decimal import Decimal
 
 locale.setlocale(locale.LC_ALL, 'sv_SE.utf8')
 # locale.setlocale(locale.LC_ALL, 'sv_SE')
 
+def avanzaStringToDecimal(inputString):
+    try:
+        return Decimal(inputString.replace('\xa0', "").replace(',', '.'))
+    except:
+        return 0
 
 def avanzaStringToFloat(inputString):
     try:
@@ -74,7 +80,7 @@ def getTickerInfoAvanza(ticker, quick=False):
         networth = re.findall('Börsvärde MUSD</span></dt>\r\n\s+<dd><span>(.*)</span></dd>', r.text)
 
     try:
-        res['networth'] = avanzaStringToInt(networth[0])
+        res['networth'] = avanzaStringToDecimal(networth[0])
     except IndexError:
         res['networth'] = 0
 
@@ -183,7 +189,7 @@ def avanzar(bot, trigger):
 
 if __name__ == "__main__":
     # test parsing function without sopel bot
-    tickers = 'tesla'
+    tickers = 'abb'
     tickers = tickers.split(',')
     for t in tickers:
         try:
@@ -195,14 +201,14 @@ if __name__ == "__main__":
         except (IndexError, TypeError) as e:
             print(str(e))
 
-    try:
+    """ try:
         da = getAvanzaReportDates('telia')
         if da is None:
             raise TypeError('I need a valid ticker name')
         for r in da[:5]:
             print(r)
     except (IndexError, TypeError) as e:
-        print(str(e))
+        print(str(e)) """
 
 
     sys.exit(0)
